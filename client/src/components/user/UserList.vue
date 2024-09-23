@@ -9,7 +9,7 @@ import { useConfirm } from 'primevue/useconfirm'
 const confirm = useConfirm()
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
-import { FilterMatchMode } from 'primevue/api'
+import { FilterMatchMode } from '@primevue/core/api'
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 
