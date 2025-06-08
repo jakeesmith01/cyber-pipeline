@@ -1,0 +1,16 @@
+{
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "vitest": "^3.0.5"
+  },
+  "dependencies": {
+    "knex": "^3.1.0",
+    "mocha": "^10.7.3",
+    "quill": "^2.0.2"
+  },
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev"
+  }
+}

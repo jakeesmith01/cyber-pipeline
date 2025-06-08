@@ -66,27 +66,36 @@ class User extends Model {
   //  return this.firstName + ' ' + this.lastName;
   //}
   static async findOrCreate(eid) {
+    // Removes the domain from the eID if present (when logging in with magic link)
+    if (eid.includes('@')){
+      const atIndex = eid.indexOf('@');
+      eid = eid.substring(0, atIndex);
+    }
+
     let user = await User.query().where('eid', eid).limit(1)
     // user not found - create user
     if (user.length === 0) {
+      console.log("eid: ",eid);
       var name = eid
-      try {
-        logger.debug('Looking up ' + eid + ' in K-State directory')
-        const response = await axios.get(
-          'https://k-state.edu/People/filter/eid=' + eid
-        )
-        const jsonstring = await parseStringPromise(response.data)
-        for (const result of jsonstring.results.result) {
-          if (eid == result.eid) {
-            name = result.fn + ' ' + result.ln
-            logger.debug('Match Found! ' + name)
-            break
-          }
-        }
-      } catch (error) {
-        logger.error('Unable to query name from K-State directory!')
-        logger.error(util.inspect(error))
-      }
+      // try {
+      //   logger.debug('Looking up ' + eid + ' in K-State directory')
+      //   const response = await axios.get(
+      //     'https://k-state.edu/People/filter/eid=' + eid
+      //   )
+      //   const jsonstring = await parseStringPromise(response.data)
+      //   for (const result of jsonstring.results.result) {
+      //     if (eid == result.eid) {
+      //       name = result.fn + ' ' + result.ln
+      //       logger.debug('Match Found! ' + name)
+      //       break
+      //     }
+      //   }
+      // } catch (error) {
+      //   logger.error('Unable to query name from K-State directory!')
+      //   logger.error(util.inspect(error))
+      // }
+
+      
       user = [
         await User.query().insert({
           eid: eid,
@@ -171,7 +180,7 @@ class User extends Model {
       required: ['eid', 'name'],
 
       properties: {
-        eid: { type: 'string', minLength: 3, maxLength: 20 },
+        eid: { type: 'string', minLength: 3, maxLength: 100 },
         name: { type: 'string', minLength: 1, maxLength: 255 },
       },
     }

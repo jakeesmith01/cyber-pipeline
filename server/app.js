@@ -80,7 +80,7 @@ app.use(compression())
 app.use(helmet())
 
 // Add Index router and OpenAPI spec in development
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'test') {
   app.use('/', indexRouter)
 
   // Use dynamic import for ES6 modules
@@ -122,4 +122,3 @@ app.use(function (err, req, res, next) {
 })
 
 export default app
-//module.exports = app

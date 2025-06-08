@@ -1,4 +1,6 @@
 <script setup>
+import ToggleSwitch from 'primevue/toggleswitch';
+
 // Props
 const props = defineProps({
   // Field name inside of model object and errors
@@ -30,9 +32,9 @@ const model = defineModel()
 </script>
 
 <template>
-  <div class="flex w-full align-items-center">
+  <div class="flex w-full items-center">
     <!-- InputText Component -->
-    <InputSwitch
+    <ToggleSwitch
       :id="field"
       :disabled="disabled"
       :invalid="errors[field] ? true : false"
@@ -51,7 +53,7 @@ const model = defineModel()
     <!-- Error Text -->
     <small
       :id="field + '-help'"
-      class="w-6 text-red-600"
+      class="w-6/12 text-red-600"
       >{{ errors[field] ? errors[field][0].message : '' }}</small
     >
   </div>

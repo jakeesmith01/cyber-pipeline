@@ -36,11 +36,12 @@ async function authenticateToken(req, res, next) {
     //   .select('name')
     // //Roles for current user
     // //console.log(roles)
-    // if (roles.some((r) => r.name === 'admin')) {
-    //   req.is_admin = true
-    // } else {
-    //   req.is_admin = false
-    // }
+    if (user.roles.some((r) => r === 'admin')) {
+       req.is_admin = true
+       console.log("is_admin is true")
+     } else {
+       req.is_admin = false
+     }
 
     next()
   })

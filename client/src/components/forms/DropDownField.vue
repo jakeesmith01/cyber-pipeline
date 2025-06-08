@@ -1,5 +1,6 @@
 <script setup>
 // PrimeVue Components
+import IftaLabel from 'primevue/iftalabel'
 import FloatLabel from 'primevue/floatlabel'
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
@@ -53,7 +54,7 @@ const model = defineModel()
 <template>
   <div class="w-full">
     <!-- Floating Label-->
-    <FloatLabel class="w-full">
+    <IftaLabel>
       <!-- Icon -->
       <IconField
         iconPosition="left"
@@ -79,10 +80,10 @@ const model = defineModel()
       <!-- Label -->
       <label
         :for="field"
-        class="ml-5"
+        class="ml-20"
         >{{ props.label }}</label
       >
-    </FloatLabel>
+    </IftaLabel>
 
     <!-- Error Text -->
     <small

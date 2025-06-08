@@ -9,19 +9,23 @@
 		"ghcr.io/devcontainers-contrib/features/vue-cli:2": {}
 	},
 
+	"postCreateCommand": "npm install && npm install --prefix client && npm install --prefix server",
+
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// This can be used to network with other containers or with the host.
-	"forwardPorts": [3001],
+	"forwardPorts": [3001, 3000],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "cd server && npm install && cd ../client && npm install",
+	// "postCreateCommand": "cd server && npm install && cd ../client && npm install",
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"Vue.volar"
+				"Vue.volar",
+				"vitest.explorer",
+				"deinsoftware.vitest-snippets"
 			]
 		}
 	}

@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AutoCompleteMultiple > matches the snapshot 1`] = `
+"<div data-v-8f5fbc77="" class="w-full">
+  <!-- Floating Label--><span data-v-8f5fbc77="" class="p-floatlabel p-floatlabel-over w-full" data-pc-name="floatlabel" pc19="" data-pc-section="root"><!-- Icon --><div data-v-8f5fbc77="" class="p-iconfield w-full" iconposition="left" data-pc-name="iconfield" pc20="" data-pc-section="root"><span data-v-8f5fbc77="" class="p-inputicon" data-pc-name="inputicon" pc21="" data-pc-section="root"><i data-v-8f5fbc77="" class="pi pi-search"></i></span><!-- Autocomplete Component-->
+  <div data-v-8f5fbc77="" class="p-autocomplete p-component p-inputwrapper p-invalid w-full" style="position: relative;" id="testField" data-pc-name="autocomplete" pc22="" data-pc-section="root">
+    <!---->
+    <ul class="p-autocomplete-input-multiple" tabindex="-1" role="listbox" aria-orientation="horizontal" data-pc-section="inputmultiple">
+      <li class="p-autocomplete-input-chip" role="option" data-pc-section="inputchip"><input type="text" class="" tabindex="0" autocomplete="off" role="combobox" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false" aria-controls="testField_list" aria-invalid="true" data-pc-section="input"></li>
+    </ul>
+    <!---->
+    <!----><span role="status" aria-live="polite" class="p-hidden-accessible" data-pc-section="hiddensearchresult" data-p-hidden-accessible="true">No results found</span>
+    <!--teleport start-->
+    <!--teleport end-->
+  </div>
+</div><!-- Label --><label data-v-8f5fbc77="" for="testField" class="ml-20">Test Label</label></span><!-- Error Text--><small data-v-8f5fbc77="" id="testField-help" class="w-full text-red-600">Field is required</small></div>"
+`;

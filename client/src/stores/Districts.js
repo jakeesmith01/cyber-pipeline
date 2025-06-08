@@ -20,6 +20,9 @@ export const useDistrictsStore = defineStore('districts', {
      */
     getDistrict: (state) => {
       return (id) => state.districts.find((district) => district.id === id)
+    },
+    getAllDistrictsUsd: (state) => {
+      return state.districts.map((district) => district.usd).join(',')
     }
   },
   actions: {

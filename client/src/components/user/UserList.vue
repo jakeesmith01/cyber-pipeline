@@ -33,9 +33,9 @@ import { useRolesStore } from '@/stores/Roles'
 const rolesStore = useRolesStore()
 
 // Setup Stores
-usersStore.hydrate()
+// usersStore.hydrate()
 const { users } = storeToRefs(usersStore)
-rolesStore.hydrate()
+// rolesStore.hydrate()
 const { roles } = storeToRefs(rolesStore)
 
 // Variables
@@ -188,6 +188,9 @@ const exportFunction = (row) => {
       v-model:filters="filters"
       :globalFilterFields="['name', 'eid']"
       :exportFunction="exportFunction"
+      scrollable
+      scrollHeight="800px"
+      paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50, 100]" :paginatorPosition="'top'"
     >
       <template #header>
         <Toolbar
@@ -227,54 +230,57 @@ const exportFunction = (row) => {
           <p>No Users Found</p>
         </div>
       </template>
-      <Column
-        field="eid"
-        sortable
-        header="eID"
-      ></Column>
-      <Column
-        field="name"
-        sortable
-        header="Name"
-      ></Column>
-      <Column
-        field="roles"
-        header="Roles"
-      >
-        <template #body="slotProps">
-          <Tag
-            v-for="role in slotProps.data.roles"
-            :key="role.id"
-            :value="role.name"
-            :icon="role.name == 'admin' ? 'pi pi-key' : ''"
-            :severity="role.name == 'admin' ? 'danger' : 'secondary'"
-          />
-        </template>
-      </Column>
-      <Column
-        header="Actions"
-        :exportable="false"
-        style="min-width: 8rem"
-      >
-        <template #body="slotProps">
-          <Button
-            icon="pi pi-pencil"
-            outlined
-            rounded
-            class="mr-2"
-            @click="editUser(slotProps.data)"
-            v-tooltip.bottom="'Edit'"
-          />
-          <Button
-            icon="pi pi-trash"
-            outlined
-            rounded
-            severity="danger"
-            @click="deleteUser(slotProps.data)"
-            v-tooltip.bottom="'Delete'"
-          />
-        </template>
-      </Column>
+      <div>
+        <Column
+          field="eid"
+          sortable
+          header="eID"
+          headerStyle="position: sticky; top: 0; z-index: 1;"
+        ></Column>
+        <Column
+          field="name"
+          sortable
+          header="Name"
+        ></Column>
+        <Column
+          field="roles"
+          header="Roles"
+        >
+          <template #body="slotProps">
+            <Tag
+              v-for="role in slotProps.data.roles"
+              :key="role.id"
+              :value="role.name"
+              :icon="role.name == 'admin' ? 'pi pi-key' : ''"
+              :severity="role.name == 'admin' ? 'danger' : 'secondary'"
+            />
+          </template>
+        </Column>
+        <Column
+          header="Actions"
+          :exportable="false"
+          style="min-width: 8rem"
+        >
+          <template #body="slotProps">
+            <Button
+              icon="pi pi-pencil"
+              outlined
+              rounded
+              class="mr-2"
+              @click="editUser(slotProps.data)"
+              v-tooltip.bottom="'Edit'"
+            />
+            <Button
+              icon="pi pi-trash"
+              outlined
+              rounded
+              severity="danger"
+              @click="deleteUser(slotProps.data)"
+              v-tooltip.bottom="'Delete'"
+            />
+          </template>
+        </Column>
+      </div>
     </DataTable>
   </Panel>
 
@@ -293,7 +299,7 @@ const exportFunction = (row) => {
       >{{ message }}</Message
     >
     <div
-      class="flex flex-column align-items-center row-gap-5 w-full pt-3 mt-1"
+      class="flex flex-col items-center gap-y-8 w-full pt-6 mt-1"
       v-focustrap
       v-on:keyup.enter="save"
     >
@@ -334,5 +340,11 @@ const exportFunction = (row) => {
 <style scoped>
 :deep(.p-datatable-header) {
   padding: 0px !important;
+}
+
+:deep(.p-datatable-thead > tr > th) {
+  position: sticky;
+  top: 0;
+  z-index: 1; /* Ensure the header stays above the body rows */
 }
 </style>

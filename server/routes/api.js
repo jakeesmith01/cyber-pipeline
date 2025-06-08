@@ -39,6 +39,9 @@ import teacherRouter from './api/teachers.js'
 import cohortRouter from './api/cohorts.js'
 import courseRouter from './api/courses.js'
 import dashboardRouter from './api/dashboard.js'
+import emailRouter from './api/emails.js'
+import canvasRouter from './api/canvas.js'
+import logger from '../configs/logger.js'
 
 // Load Token Middleware
 router.use(token)
@@ -57,6 +60,14 @@ router.use('/teachers', teacherRouter)
 router.use('/cohorts', cohortRouter)
 router.use('/courses', courseRouter)
 router.use('/dashboard', dashboardRouter)
+router.use('/emails', emailRouter)
+
+if(process.env.CANVAS_ENABLED === 'true'){
+  router.use('/canvas', canvasRouter)
+}
+else{
+  logger.warn('Canvas Token NOT defined in .env, Canvas API disabled')
+}
 
 /**
  * @swagger
@@ -89,6 +100,7 @@ router.use('/dashboard', dashboardRouter)
  *         $ref: '#/components/responses/UnauthorizedError'
  */
 router.get('/', function (req, res, next) {
+
   res.json({
     version: 1.0,
     user_id: req.user_id,

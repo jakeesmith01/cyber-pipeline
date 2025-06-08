@@ -6,11 +6,6 @@ import { storeToRefs } from 'pinia'
 // PrimeVue Components
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
-import Message from 'primevue/message'
-import Panel from 'primevue/panel'
-import Button from 'primevue/button'
-import IconField from 'primevue/iconfield'
-import InputText from 'primevue/inputtext'
 
 // Custom Components
 import TextField from '@/components/forms/TextField.vue'
@@ -58,7 +53,7 @@ const save = async () => {
       >{{ message }}</Message
     >
     <div
-      class="flex flex-column align-items-center row-gap-5 w-full pt-3"
+      class="flex flex-col items-center gap-y-8 w-full pt-6"
       v-focustrap
       v-on:keyup.enter="save"
     >

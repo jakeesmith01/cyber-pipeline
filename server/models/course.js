@@ -1,4 +1,5 @@
 import Model from './base.js'
+import Teacher from './teacher.js'
 
 /**
  * @swagger
@@ -87,8 +88,8 @@ class Course extends Model {
   // This object defines the relations to other models.
   static get relationMappings() {
     // Importing models here is one way to avoid require loops.    
-    return import('./teacher').then(teacherModule => {
-      const Teacher = teacherModule.default
+    
+      //const Teacher = teacherModule.default
       return {
         teachers: {
           relation: Model.ManyToManyRelation,
@@ -134,7 +135,6 @@ class Course extends Model {
           },
         },
       }
-    }) 
   }
 }
 

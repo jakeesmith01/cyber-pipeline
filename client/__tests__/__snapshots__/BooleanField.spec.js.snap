@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BooleanField > matches the snapshot 1`] = `
+"<div class="flex w-full items-center">
+  <!-- InputText Component -->
+  <div class="p-toggleswitch p-component p-invalid" style="position: relative; min-width: 2.5rem;" id="testField" data-pc-name="toggleswitch" pc7="" data-pc-section="root" data-p-checked="false" data-p-disabled="false"><input type="checkbox" role="switch" class="p-toggleswitch-input" aria-checked="false" aria-invalid="true" data-pc-section="input">
+    <div class="p-toggleswitch-slider" data-pc-section="slider">
+      <div class="p-toggleswitch-handle" data-pc-section="handle"></div>
+    </div>
+  </div><!-- Label --><label for="testField" class="ml-2">TestLabel</label><!-- Error Text --><small id="testField-help" class="w-6/12 text-red-600">Field is required</small>
+</div>"
+`;

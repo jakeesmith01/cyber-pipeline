@@ -3,7 +3,6 @@ import Chart from 'primevue/chart'
 import Panel from 'primevue/panel'
 
 import { ref, onMounted } from 'vue'
-
 onMounted(() => {
   chartData.value = setChartData()
   chartOptions.value = setChartOptions()
@@ -89,7 +88,7 @@ const setChartOptions = () => {
       type="bar"
       :data="chartData"
       :options="chartOptions"
-      class="h-30rem"
+      class="h-[30rem]"
     />
   </Panel>
 </template>

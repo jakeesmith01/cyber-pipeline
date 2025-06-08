@@ -35,9 +35,9 @@
             "Watch Client"
         ],
         "group": "build",
-        "runOptions": {
-            "runOn": "folderOpen"
-        }
+        // "runOptions": {
+        //     "runOn": "folderOpen"
+        // }
     },
     {
         "label": "Lint and Format",
@@ -54,6 +54,38 @@
             "$eslint-compact",
             "$prettier"
         ]
+    },
+    {
+        "label": "Test Server",
+        "type": "shell",
+        "command": "cd server && npm test",
+        "group": "test",
+        "presentation": {
+            "group": "testGroup",
+            "reveal": "always",
+            "panel": "new",
+            "echo": false
+        }
+    },
+    {
+        "label": "Test Client",
+        "type": "shell",
+        "command": "cd client && npm test",
+        "group": "test",
+        "presentation": {
+            "group": "testGroup",
+            "reveal": "always",
+            "panel": "new",
+            "echo": false
+        }
+    },
+    {
+        "label": "Test All",
+        "dependsOn": [
+            "Test Server",
+            "Test Client"
+        ],
+        "group": "test",
     }
 ]
 }

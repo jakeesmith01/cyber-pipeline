@@ -32,8 +32,150 @@ import requestLogger from '../middlewares/request-logger.js'
 //const User = require('../models/user')
 import User from '../models/user.js'
 
+import sendMagicLink from '../services/emailService.js'
+
 // Configure Logging
 router.use(requestLogger)
+
+import crypto from 'crypto'
+import logger from '../configs/logger.js'
+
+const tokenStore = new Map()
+setInterval(() => {
+  const now = Date.now();
+
+  tokenStore.forEach((value, token) => {
+    if (value.expiresAt < now) {
+      console.log(`Token expired and removed: ${token}`);
+      tokenStore.delete(token);  // Remove expired token
+    }
+  });
+}, 24 * 60 * 60 * 1000); // Run once a day
+
+// 1. Send Magic Login Link
+// router.post('/magic-link', async (req, res) => {
+//   const { email } = req.body
+//   if (!email) return res.status(400).json({ error: 'Missing email' })
+
+//   // Generate a secure, time-limited token
+//   const token = crypto.randomBytes(32).toString('hex')
+//   const expiresAt = Date.now() + 15 * 60 * 1000 // 15 minutes
+
+//   tokenStore.set(token, { email, expiresAt })
+
+//   const magicLink = `${process.env.APP_HOSTNAME}/auth/magic-login/verify?token=${token}`
+
+//   if (process.env.EMAIL_ENABLED === 'true') {
+//     res.status(200).json({ magicLink, emailEnabled: true })
+//   } else {
+//     console.log(`🔗 Magic login link for ${email}: ${magicLink}`);
+//     res.status(200).json({ magicLink, emailEnabled: false })
+//   }
+// })
+
+/**
+ * @swagger
+ * /post:
+ *    post:
+ *      summary: Send a magic link to the user
+ *      description: Sends a magic link to the user for login
+ *      tags: [Auth]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                email:
+ *                  type: string
+ *                  description: The email address of the user
+ *      responses:
+ *        200:
+ *          description: Magic link sent successfully
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  magicLink:
+ *                    type: string
+ *                  emailEnabled:
+ *                    type: boolean
+ *        400:
+ *          description: Invalid email address
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                    description: Error message
+ *        500:
+ *          description: Internal server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                    description: Error message
+ *  
+ * 
+ */
+router.post('/magic-link', async (req, res) => {
+  const { email } = req.body
+
+  if(!email || !email.includes('@')){
+    return res.status(400).json({ message: 'Invalid email address'})
+  }
+
+  try{
+    const token = crypto.randomBytes(32).toString('hex')
+    const expiresAt = Date.now() + 15 * 60 * 1000
+
+    tokenStore.set(token, {email, expiresAt})
+
+    const magicLink = `${process.env.APP_HOSTNAME}/auth/magic-login/verify?token=${token}`
+
+    const emailData = {
+      to: email,
+      subject: 'Login link for CyberPipeline',
+      text: `Here is your link to login to CyberPipeline: ${magicLink}`,
+      html: `<p>Here is your <strong>link</strong> to login to <em>CyberPipeline</em>: <a href="${magicLink}">${magicLink}</a></p>`
+    }
+
+    await sendMagicLink(emailData.to, emailData.subject, emailData.text, emailData.html);
+
+    res.status(200).json({magicLink, emailEnabled: true})
+  }catch(error){
+      console.log("Error sending magic link")
+  }
+})
+
+router.get('/magic-login/verify', async (req, res) => {
+  const { token } = req.query
+  const data = tokenStore.get(token)
+
+  if (!data || Date.now() > data.expiresAt) {
+    return res.status(401).send('Invalid or expired magic link')
+  }
+
+  const eid = data.email
+
+  tokenStore.delete(token)
+
+  const user = await User.findOrCreate(eid)
+
+  req.session.user_id = user.id
+  req.session.user_eid = eid
+  console.log("Session after login:", req.session);
+
+  res.redirect('/')
+})
+
 
 /**
  * @swagger
@@ -59,6 +201,7 @@ router.get('/login', async function (req, res, next) {
       if (req.session[cas.session_name] === undefined) {
         // CAS is not authenticated, so redirect
         // Hack to fix redirects
+        console.log("req session: ", req.session)
         req.url = req.originalUrl
         cas.bounce_redirect(req, res, next)
         return
@@ -69,6 +212,8 @@ router.get('/login', async function (req, res, next) {
     }
     if (eid && eid.length != 0) {
       // Find or Create User for eID
+      console.log("eid2: ", eid)
+      console.log("req session: ", req.session)
       let user = await User.findOrCreate(eid)
       // Store User ID in session
       req.session.user_id = user.id

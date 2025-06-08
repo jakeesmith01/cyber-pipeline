@@ -6,6 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile
 
+    environment:
+      # Use the MYSQL_HOST environment variable to connect to the MySQL container.
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: cyberpipeline
+      MYSQL_USER: cyberpipeline
+      MYSQL_PASSWORD: password
+      MYSQL_RANDOM_ROOT_PASSWORD: fact
+      APP_HOSTNAME: localhost
+
     volumes:
       - ../..:/workspaces:cached
       
@@ -55,6 +64,8 @@ services:
     restart: unless-stopped
     networks:
       - pipeline
+    ports: 
+      - '3306:3306'
     environment:
       MYSQL_HOST: mysql
       MYSQL_DATABASE: cyberpipeline
@@ -76,14 +87,17 @@ services:
       timeout: 5s
       retries: 20
   
-  # phpmyadmin:
-  #   image: phpmyadmin:latest
-  #   container_name: phpmyadmin
-  #   restart: unless-stopped
-  #   ports:
-  #     - '8080:80'
-  #   environment:
-  #     PMA_ARBITRARY: 1
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
+    networks:
+      - pipeline
+      - default
+    ports:
+      - '8080:80'
+    environment:
+      PMA_ARBITRARY: 1
 
 networks:
   pipeline:

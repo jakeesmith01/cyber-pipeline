@@ -209,6 +209,7 @@ const exportFunction = (row) => {
       v-model:filters="filters"
       :globalFilterFields="['name']"
       :exportFunction="exportFunction"
+      paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50, 100]" :paginatorPosition="'top'"
     >
       <template #header>
         <Toolbar
@@ -308,7 +309,7 @@ const exportFunction = (row) => {
 
   <!-- Notes dialog -->
   <Popover ref="notesDialog">
-    <div class="flex flex-column gap-1 w-25rem">
+    <div class="flex flex-col gap-1 w-[25rem]">
       <div class="w-full">
         <span>Notes</span>
         <hr class="w-full" />
@@ -332,7 +333,7 @@ const exportFunction = (row) => {
       >{{ message }}</Message
     >
     <div
-      class="flex flex-column align-items-center row-gap-5 w-full pt-3 mt-1"
+      class="flex flex-col items-center gap-y-8 w-full pt-6 mt-1"
       v-focustrap
       v-on:keyup.enter="save"
     >
@@ -352,9 +353,9 @@ const exportFunction = (row) => {
         :values="teachers"
         valueLabel="name"
       />-->
-      <div class="w-full flex flex-column row-gap-5 -mt-3">
-        <div class="w-full flex flex-row align-items-center">
-          <label class="w-11 flex-grow-1 text-center">Teachers</label>
+      <div class="w-full flex flex-col gap-y-8 -mt-6">
+        <div class="w-full flex flex-row items-center">
+          <label class="w-11/12 grow text-center">Teachers</label>
           <div class="pl-1">
             <Button
               icon="pi pi-plus"
@@ -368,7 +369,7 @@ const exportFunction = (row) => {
           v-for="(item, index) in cohort.teachers"
           :key="item.id"
         >
-          <div class="w-5 pr-1">
+          <div class="w-5/12 pr-1">
             <DropDownField
               v-model="cohort.teachers[index].id"
               field="id"
@@ -379,7 +380,7 @@ const exportFunction = (row) => {
               valueLabel="name"
             />
           </div>
-          <div class="w-6 flex-grow-1 px-1">
+          <div class="w-6/12 grow px-1">
             <TextField
               v-model="cohort.teachers[index].notes"
               field="notes"

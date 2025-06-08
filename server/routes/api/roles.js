@@ -38,6 +38,7 @@ router.use(adminOnly)
  */
 router.get('/', async function (req, res, next) {
   let roles = await Role.query().select('id', 'name')
+  console.log("roles: " + roles)
   res.json(roles)
 })
 

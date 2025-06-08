@@ -60,7 +60,7 @@ const items = ref([])
  *
  * @param {AutoCompleteCompleteEvent} event
  */
-const search = (event) => {
+const search = (event) => { //right now this is case sensitive
   items.value = props.values
     .filter((value) => value[props.valueLabel].includes(event.query))
     .sort((a, b) => a[props.valueLabel].localeCompare(b[props.valueLabel]))
@@ -97,7 +97,7 @@ const search = (event) => {
       <!-- Label -->
       <label
         :for="field"
-        class="ml-5"
+        class="ml-20"
         >{{ props.label }}</label
       >
     </FloatLabel>

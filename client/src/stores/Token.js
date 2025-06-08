@@ -7,6 +7,7 @@ import Logger from 'js-logger'
 // Services
 import api from '@/services/api'
 
+
 export const useTokenStore = defineStore('token', {
   state: () => {
     return {
@@ -72,6 +73,30 @@ export const useTokenStore = defineStore('token', {
     is_user() {
       if (this.token) {
         return jwtDecode(this.token)['roles'].includes('user')
+      } else {
+        return false
+      }
+    },
+    /**
+     * Gets the user's guest status
+     * 
+     * @returns Boolean: true if the user is a guest, otherwise false
+     */
+    is_guest() {
+      if(this.token){
+        return jwtDecode(this.token)['roles'].includes('guest')
+      } else {
+        return false
+      }
+    },
+    /**
+     * Gets the user's student admin status
+     * 
+     * @returns Boolean: true if the user is a student admin, otherwise false 
+     */
+    is_student_admin() {
+      if(this.token){
+        return jwtDecode(this.token)['roles'].includes('student_admin')
       } else {
         return false
       }
@@ -178,6 +203,28 @@ export const useTokenStore = defineStore('token', {
     async logout() {
       this.token = ''
       window.location.href = '/auth/logout'
+    },
+
+    /**
+     * Sends a magic link to the user via email 
+     * @param {string} email - The user's email address, note: this should be a single email address unlike the sendEmail function 
+     * @returns 
+     */
+    async requestMagicLink(email) {
+      Logger.info(`token:requestMagicLink for ${email}`)
+      const response = await api.post('/auth/magic-link', { email })
+      return{
+        magicLink: response.data.magicLink,
+        emailEnabled: response.data.emailEnabled,
+      }
+    },
+    /**
+     * Verifies the magic link to establish a session 
+     * @param {string} link 
+     */
+    async verifyMagicLink(link){
+      Logger.info(`token:verifyMagicLink for ${link}`)
+      await api.post('/auth/magic-link/verify', { link })
     }
   }
 })

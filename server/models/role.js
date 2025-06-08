@@ -1,4 +1,5 @@
 import Model from './base.js'
+import User from './user.js'
 
 /**
  * @swagger
@@ -63,8 +64,6 @@ class Role extends Model {
   static get relationMappings() {
     // Importing models here is one way to avoid require loops.
     //const User = require('./user')
-    return import('./user').then((UserModule) => {
-      const User = UserModule.default
       return {
         users: {
           relation: Model.ManyToManyRelation,
@@ -85,7 +84,6 @@ class Role extends Model {
           filter: (builder) => builder.select('id', 'eid', 'name'),
         },
       }
-    })
   }
 }
 

@@ -8,7 +8,8 @@ const levels = {
   http: 3,
   socket: 4,
   presence: 5,
-  debug: 6,
+  email: 6,
+  debug: 7,
 }
 
 const level = () => {
@@ -24,6 +25,7 @@ const colors = {
   http: 'magenta',
   socket: 'blue',
   presence: 'grey',
+  email: 'cyan',
   debug: 'white',
 }
 
